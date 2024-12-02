@@ -1,0 +1,17 @@
+{
+  "name": "gis-mobile-app",
+  "version": "0.0.1",
+  "description": "A mobile app for connecting and collecting environmental data",
+  "author": "John Dickinson",
+  "private": true,
+  "dependencies": {
+    "@capacitor-community/bluetooth-le": "^6.0.1",
+    "@capacitor-community/sqlite": "^6.0.2",
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/geolocation": "^6.0.1",
+    "pinia": "^2.2.4"
+  }
+}

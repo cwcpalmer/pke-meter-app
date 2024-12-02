@@ -1,0 +1,13 @@
+{
+  "appId": "com.wydevelopment.gis.mobile",
+  "appName": "GIS Mobile App",
+  "webDir": "www",
+  "plugins": {
+    "CapacitorSQLite": {
+      "iosDatabaseLocation": "Library/CapacitorDatabase",
+      "iosIsEncryption": false,
+      "iosKeychainPrefix": "ionic7-vue-sqlite-app",
+      "androidIsEncryption": false
+    }
+  }
+}
