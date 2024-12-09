@@ -43,7 +43,7 @@
 
         for (let i = 0 ; i < length ; i++) {
             //artificial timer for demo purposes
-            await new Promise(resolve => setTimeout(resolve, 200))
+            //await new Promise(resolve => setTimeout(resolve, 200))
 
             fetch(`https://www.packageinstaller.zip/api/`, {
                 method: "POST",
@@ -66,11 +66,11 @@
                 })
             })
             .then(response => response.json())
-            .then(data => {
+            .then( async data => {
                 if (data.success) {
                     console.log("successful")
                     curCount++
-                    databaseStore.deleteRecord(results.values[i].recordId)
+                    await databaseStore.deleteRecord(results.values[i].readingId)
                     progress.value = Math.round(curCount * 100 / length)
                 }
                 else {
