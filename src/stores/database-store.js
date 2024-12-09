@@ -22,7 +22,7 @@ async function configDatabase() {
                 lat DECIMAL(10, 6),
                 lon DECIMAL (10, 6),
                 extSensorId INTEGER,
-                readingValue DECIMAL(64, 32),
+                readingValue DECIMAL(64, 30),
                 extDeviceMac VARCHAR(18)
                 )`
             ]
@@ -46,11 +46,37 @@ export const dbStore = defineStore("dbStore", {
 
     actions: {
 
-        async test() {
-           let results2 = await db.query(`SELECT * FROM sensor_readings`)
-           console.log(results2)
-           
+        async getAllRecords() {
+           let results = await db.query(`SELECT * FROM sensor_readings`)
+           return results
         },
+
+        async deleteRecord(recordId){
+            await db.query(`DELETE FROM sensor_readings WHERE readingId = ?`, [recordId])
+        },
+        
+        async view() {
+            fetch(`https://www.packageinstaller.zip/api/`, {
+             method: "POST",
+             headers: {
+                 'Content-Type' : 'application/json'
+             },
+             body: JSON.stringify({
+                 query: {
+                     dataset: "pke",
+                     action: "getSensorReadings",
+                     params: {}
+                 }
+             })
+            })
+            .then(response => response.json())
+            .then(data => {
+             if (data.success) {
+                 console.log("successful")
+                 console.log(data.records)
+             }
+            })
+         },
 
         async openDatabase(){
             this.sqliteConnection = new SQLiteConnection(CapacitorSQLite)
@@ -122,7 +148,7 @@ export const dbStore = defineStore("dbStore", {
         },
 
         async dataInsertion(timestamp, lat, long, sensorId, sensorData, deviceId){
-            await db.query(`INSERT INTO sensor_readings (timestamp, lat, lon, extSensorid, readingValue, extDeviceMac) VALUES (?, ?, ?, ?, ?, ?)`, [timestamp, lat, long, sensorId, sensorData, deviceId])
+            await db.query(`INSERT INTO sensor_readings (timestamp, lat, lon, extSensorId, readingValue, extDeviceMac) VALUES (?, ?, ?, ?, ?, ?)`, [timestamp, lat, long, sensorId, sensorData, deviceId])
         }
     }
 })
