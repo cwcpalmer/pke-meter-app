@@ -13,9 +13,8 @@
         <q-btn v-if="!deviceStore.isConnected" @click="connectDevice()" color="primary" icon="bluetooth" size="lg" label="Connect" style="display: block; width: 100%;"/>
         <q-btn v-else @click="disconnectDevice()" color="red" icon="bluetooth" size="lg" label="Disconnect" style="display: block; width: 100%;"/>
         <q-btn color="negative" icon="arrow_back" size="lg" label="Back" @click="$router.push('/');" style="display: block; width: 100%;"/>
-        {{  phoneDataStore.lastLocation }}
-        {{  phoneDataStore.lastTimeStamp }}
-        {{ debugInfo }}
+        
+
 
     </q-page>
   </template>
@@ -27,7 +26,8 @@
     import { connectedDeviceStore } from "../stores/connected-device-store.js";
     import { gatheredPhoneData } from "../stores/gathered-phone-data-store.js";
     import { dbStore } from "../stores/database-store.js";
- 
+    import { parseStore } from "../stores/fetch-and-parse-store.js"
+    import { KeepAwake } from '@capacitor-community/keep-awake';
 
 
 // ======================================================================
@@ -41,7 +41,8 @@
     const phoneDataStore = gatheredPhoneData()
     const debugInfo = ref({})
     const databaseStore = dbStore()
-    
+    const parse = parseStore()
+
 
 // ======================================================================
 
@@ -94,8 +95,15 @@
     }
 
     const connectDevice = async () => {
-        await BleClient.connect(selectedDevice.value.device.deviceId, (deviceId) => {
+        await BleClient.connect(selectedDevice.value.device.deviceId, async (deviceId) => {
+            // In-line callback to report connection lost
             deviceStore.isConnected = false
+            deviceStore.connectedDeviceID = ""
+            deviceStore.connectedDeviceName = ""
+
+            phoneDataStore.reset()
+            await KeepAwake.allowSleep();
+
         });
         deviceStore.connectedDeviceID = selectedDevice.value.device.deviceId
         deviceStore.connectedDeviceName = selectedDevice.value.device.name
@@ -103,17 +111,39 @@
         let services = await BleClient.getServices(deviceStore.connectedDeviceID)
         deviceStore.isConnected = true
 
-        
+        await KeepAwake.keepAwake();
+
        
     // start watching for notifications 
+    
         await BleClient.startNotifications(
             deviceStore.connectedDeviceID,
             deviceStore.serviceSensors,
             deviceStore.characteristicSensors,
             (value) => {
-                parseData(value)
+                parse.parseData(value)
             }
         );
+        
+        await BleClient.startNotifications(
+            deviceStore.connectedDeviceID,
+            deviceStore.serviceBattery,
+            deviceStore.characteristicBatteryLevel,
+            (value) => {
+                phoneDataStore.battery = value.getUint8(0)
+                if (value.getUint8(0) >= 75) {
+                    phoneDataStore.batteryIcon = "battery_full"
+                }
+                else if (value.getUint8(0) >= 25) {
+                    phoneDataStore.batteryIcon = "battery_3_bar"
+                }
+                else {
+                    phoneDataStore.batteryIcon = "battery_alert"
+                }
+                
+            }
+        );
+
     }
 
     const disconnectDevice = async () => {
@@ -123,33 +153,10 @@
             deviceStore.characteristicSensors
         )
         await BleClient.disconnect(deviceStore.connectedDeviceID);
-        deviceStore.isConnected = false
-        deviceStore.connectedDeviceID = ""
-        deviceStore.connectedDeviceName = ""
     }
 
-    const parseData = async (value) => {
-        const flags = value.getUint8(0);
-        let curIndex = 1
-        let geoData = await Geolocation.getCurrentPosition()
-        phoneDataStore.lastLocation = {
-            latitude: geoData.coords.latitude,
-            longitude: geoData.coords.longitude
-        }
-        phoneDataStore.lastTimeStamp = geoData.timestamp
-        if (flags & 0b00000001) {
-            // temp sensor
-            let temp = value.getFloat32(1, true);
-            temp = Math.round((temp + Number.EPSILON) * 100) / 100
-            //alert(`temperature: ${temp}` + "\u00B0C")
-            curIndex += 4
-
-            await databaseStore.dataInsertion(geoData.timestamp, geoData.coords.latitude, geoData.coords.longitude, 1, temp, deviceStore.connectedDeviceID)
-
-        }
-
+    const appTest = async () => {
+        this.$root.testFunction()
     }
-
     
-  </script>
-  
+</script>

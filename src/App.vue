@@ -16,6 +16,7 @@ const databaseStore = dbStore()
 let loopTimer
 const deviceStore = connectedDeviceStore()
 
+
 onMounted( async () => {
       await databaseStore.openDatabase()
       loopTimer = setInterval(() => {
@@ -24,6 +25,8 @@ onMounted( async () => {
             deviceStore.serviceSensors,
             deviceStore.characteristicSensors,
             numbersToDataView([0b00000011]))
+
+            
         }
       }, 10000)
     });
@@ -33,5 +36,8 @@ onMounted( async () => {
         await databaseStore.closeDatabase() 
     })
 
+// ==============================================================================================================================
+
+ 
 
 </script>

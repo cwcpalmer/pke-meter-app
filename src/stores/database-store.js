@@ -23,7 +23,8 @@ async function configDatabase() {
                 lon DECIMAL (10, 6),
                 extSensorId INTEGER,
                 readingValue DECIMAL(64, 30),
-                extDeviceMac VARCHAR(18)
+                extDeviceMac VARCHAR(18),
+                name VARCHAR(32)
                 )`
             ]
 
@@ -31,7 +32,7 @@ async function configDatabase() {
     ]
 
     await CapacitorSQLite.addUpgradeStatement({
-        database: "puppies",
+        database: "sensordata",
         upgrade: dbConfig,
     });
 
@@ -56,7 +57,7 @@ export const dbStore = defineStore("dbStore", {
         },
         
         async view() {
-            fetch(`https://www.packageinstaller.zip/api/`, {
+            fetch(`https://www.geoappdata.com/api/v1/`, {
              method: "POST",
              headers: {
                  'Content-Type' : 'application/json'
@@ -82,14 +83,14 @@ export const dbStore = defineStore("dbStore", {
             this.sqliteConnection = new SQLiteConnection(CapacitorSQLite)
 
             const retCC = (await this.sqliteConnection.checkConnectionsConsistency()).result;
-            const isConn = (await this.sqliteConnection.isConnection("puppies", false)).result;
+            const isConn = (await this.sqliteConnection.isConnection("sensordata", false)).result;
             
             if (retCC && isConn) {
-                db = await this.sqliteConnection.retreiveConnection("puppies", false);
+                db = await this.sqliteConnection.retreiveConnection("sensordata", false);
             }
             else{
                 db = await this.sqliteConnection.createConnection(
-                "puppies",
+                "sensordata",
                 false,
                 "no-encryption",
                 1,
@@ -97,10 +98,12 @@ export const dbStore = defineStore("dbStore", {
                 );
             }
             
-            await configDatabase()
+            
 
             await db.open();
             
+            await configDatabase()
+
             const res = await db.isDBOpen();
             if (!res.result) {
                 alert("db not open")
@@ -113,13 +116,13 @@ export const dbStore = defineStore("dbStore", {
         },
 
         async closeDatabase() {
-            const isConn = (await this.sqliteConnection.isConnection("puppies", false)).result;
+            const isConn = (await this.sqliteConnection.isConnection("sensordata", false)).result;
             if (isConn) {
                 try {
-                await this.sqliteConnection.closeConnection("puppies", false);
+                await this.sqliteConnection.closeConnection("sensordata", false);
                 }
                 catch {
-                    const isConn = (await this.sqliteConnection.isConnection("puppies", false)).result;
+                    const isConn = (await this.sqliteConnection.isConnection("sensordata", false)).result;
                     if (isConn) {
                         alert("close failed")
                     }
@@ -143,12 +146,16 @@ export const dbStore = defineStore("dbStore", {
         async sensorPopulator() {
             let tempCheck = await db.query(`SELECT * FROM sensors WHERE sensorId=1`)
             if (tempCheck.values.length == 0) {
-                await db.query(`INSERT INTO sensors (sensorId, name) VALUES (1, "Temperature")`)
+                await db.query(`INSERT INTO sensors (sensorId, name) VALUES (1, "BMP280")`)
+            }
+            let tempCheck2 = await db.query(`SELECT * FROM sensors WHERE sensorId=2`)
+            if (tempCheck2.values.length == 0) {
+                await db.query(`INSERT INTO sensors (sensorId, name) VALUES (2, "MCP9808")`)
             }
         },
 
-        async dataInsertion(timestamp, lat, long, sensorId, sensorData, deviceId){
-            await db.query(`INSERT INTO sensor_readings (timestamp, lat, lon, extSensorId, readingValue, extDeviceMac) VALUES (?, ?, ?, ?, ?, ?)`, [timestamp, lat, long, sensorId, sensorData, deviceId])
+        async dataInsertion(timestamp, lat, long, sensorId, sensorData, deviceId, name){
+            await db.query(`INSERT INTO sensor_readings (timestamp, lat, lon, extSensorId, readingValue, extDeviceMac, name) VALUES (?, ?, ?, ?, ?, ?, ?)`, [timestamp, lat, long, sensorId, sensorData, deviceId, name])
         }
     }
 })

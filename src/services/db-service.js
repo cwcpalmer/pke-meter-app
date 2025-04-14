@@ -9,14 +9,14 @@ class Database{
 
     async openDatabase(){
         const retCC = (await this.sqliteConnection.checkConnectionsConsistency()).result;
-        const isConn = (await this.sqliteConnection.isConnection("puppies", false)).result;
+        const isConn = (await this.sqliteConnection.isConnection("sensordata", false)).result;
         let db;
         if (retCC && isConn) {
-            db = await this.sqliteConnection.retreiveConnection("puppies", false);
+            db = await this.sqliteConnection.retreiveConnection("sensordata", false);
         }
         else{
             db = await this.sqliteConnection.createConnection(
-            "puppies",
+            "sensordata",
             false,
             "no-encryption",
             1,
@@ -37,14 +37,14 @@ class Database{
     }
 
     async closeDatabase(){
-        const isConn = (await this.sqliteConnection.isConnection("puppies", false)).result;
+        const isConn = (await this.sqliteConnection.isConnection("sensordata", false)).result;
         if (isConn) {
             try {
             alert("tryna unmount")
-            await this.sqliteConnection.closeConnection("puppies", false);
+            await this.sqliteConnection.closeConnection("sensordata", false);
             }
             catch {
-                const isConn = (await this.sqliteConnection.isConnection("puppies", false)).result;
+                const isConn = (await this.sqliteConnection.isConnection("sensordata", false)).result;
                 if (isConn) {
                     alert("close failed")
                 }

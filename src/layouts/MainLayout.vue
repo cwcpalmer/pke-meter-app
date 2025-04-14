@@ -9,6 +9,10 @@
           </q-avatar>
           GIS Mobile App
         </q-toolbar-title>
+        <div>
+            <q-icon :name="phoneDataStore.batteryIcon" />
+            {{ phoneDataStore.battery }}%
+        </div>
       </q-toolbar>
 
       
@@ -30,3 +34,9 @@
 
   </q-layout>
 </template>
+
+<script setup>
+    import { gatheredPhoneData } from "../stores/gathered-phone-data-store.js";
+    const phoneDataStore = gatheredPhoneData()
+
+</script>

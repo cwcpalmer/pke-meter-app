@@ -1,5 +1,12 @@
 <template>
     <q-page class="flex flex-center">
+        <div class="column">
+            <div>Temperature: {{  phoneDataStore.temp }}</div>
+            <div>Temperature 2: {{  phoneDataStore.temp2 }}</div>
+            <div>Latitude: {{  phoneDataStore.lastLocation.latitude }}</div>
+            <div>Longitude: {{  phoneDataStore.lastLocation.longitude }}</div>
+            <div>Time: {{ phoneDataStore.lastTimeStamp == null ? '' : new Date(phoneDataStore.lastTimeStamp) }}</div>
+        </div>
       <q-btn color="negative" size="xl" icon="arrow_back" label="Back" @click="$router.push('/')"/>
       <q-btn color="positive" size="xl" icon="help" label="Upload" @click="dbUpload()"/>
       <q-btn color="positive" size="xl" icon="help" label="View" @click="dbView()"/>
@@ -19,15 +26,18 @@
     </q-page>
   </template>
   
+  
   <script setup>
     import { ref, reactive, onMounted } from 'vue';
     import { connectedDeviceStore } from "../stores/connected-device-store.js";
     import { dbStore } from "../stores/database-store.js";
+    import { gatheredPhoneData } from "../stores/gathered-phone-data-store.js";
 
     const databaseStore = dbStore()
     const showUpload = ref(false)
     const deviceStore = connectedDeviceStore();
     const progress = ref(0)
+    const phoneDataStore = gatheredPhoneData()
     
     onMounted( async () => {
       await databaseStore.openDatabase()
@@ -45,23 +55,22 @@
             //artificial timer for demo purposes
             //await new Promise(resolve => setTimeout(resolve, 200))
 
-            fetch(`https://www.packageinstaller.zip/api/`, {
+            fetch(`https://www.geoappdata.com/api/v1/`, {
                 method: "POST",
                 headers: {
                     'Content-Type' : 'application/json'
                 },
                 body: JSON.stringify({
-                    query: {
-                        dataset: "pke",
-                        action: "saveSensorReading",
-                        params: {
-                            timestamp: results.values[i].timestamp,
-                            lat: results.values[i].lat,
-                            lon: results.values[i].lon,
-                            extSensorId: results.values[i].extSensorId,
-                            readingValue: results.values[i].readingValue,
-                            extDeviceMac: results.values[i].extDeviceMac
-                        }
+                    action: "saveSensorReading",
+                    params: {
+                        timestamp: results.values[i].timestamp,
+                        lat: results.values[i].lat,
+                        lon: results.values[i].lon,
+                        extSensorId: results.values[i].extSensorId,
+                        readingValue: results.values[i].readingValue,
+                        extDeviceMac: results.values[i].extDeviceMac,
+                        name: deviceStore.connectedDeviceName,
+                        authCode: "JohnDevice123"
                     }
                 })
             })
