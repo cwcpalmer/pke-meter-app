@@ -17,6 +17,7 @@
     "@capacitor-community/keep-awake": "^7.0.0",
     "@quasar/extras": "^1.16.4",
     "axios": "^1.2.1",
+    "cocoapods": "^0.0.0",
     "pinia": "^2.0.11",
     "quasar": "^2.16.0",
     "vue": "^3.4.18",

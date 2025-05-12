@@ -1,0 +1,67 @@
+PODS:
+  - Capacitor (6.2.1):
+    - CapacitorCordova
+  - CapacitorApp (6.0.1):
+    - Capacitor
+  - CapacitorCommunityBluetoothLe (6.0.1):
+    - Capacitor
+  - CapacitorCommunityKeepAwake (5.0.1):
+    - Capacitor
+  - CapacitorCommunitySqlite (6.0.2):
+    - Capacitor
+    - SQLCipher
+    - ZIPFoundation
+  - CapacitorCordova (6.2.1)
+  - CapacitorGeolocation (6.0.1):
+    - Capacitor
+  - SQLCipher (4.8.0):
+    - SQLCipher/standard (= 4.8.0)
+  - SQLCipher/common (4.8.0)
+  - SQLCipher/standard (4.8.0):
+    - SQLCipher/common
+  - ZIPFoundation (0.9.19)
+
+DEPENDENCIES:
+  - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
+  - "CapacitorCommunityBluetoothLe (from `../../node_modules/@capacitor-community/bluetooth-le`)"
+  - "CapacitorCommunityKeepAwake (from `../../node_modules/@capacitor-community/keep-awake`)"
+  - "CapacitorCommunitySqlite (from `../../node_modules/@capacitor-community/sqlite`)"
+  - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorGeolocation (from `../../node_modules/@capacitor/geolocation`)"
+
+SPEC REPOS:
+  trunk:
+    - SQLCipher
+    - ZIPFoundation
+
+EXTERNAL SOURCES:
+  Capacitor:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorApp:
+    :path: "../../node_modules/@capacitor/app"
+  CapacitorCommunityBluetoothLe:
+    :path: "../../node_modules/@capacitor-community/bluetooth-le"
+  CapacitorCommunityKeepAwake:
+    :path: "../../node_modules/@capacitor-community/keep-awake"
+  CapacitorCommunitySqlite:
+    :path: "../../node_modules/@capacitor-community/sqlite"
+  CapacitorCordova:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorGeolocation:
+    :path: "../../node_modules/@capacitor/geolocation"
+
+SPEC CHECKSUMS:
+  Capacitor: c95400d761e376be9da6be5a05f226c0e865cebf
+  CapacitorApp: f51c08c64df914fc934239fd1b3fc809d62a02f6
+  CapacitorCommunityBluetoothLe: b554daec38aeffc3441662f890e333381797b162
+  CapacitorCommunityKeepAwake: 6ca8e4c8db46f0cf99e33f1ca1162fbc97c8611e
+  CapacitorCommunitySqlite: 0299d20f4b00c2e6aa485a1d8932656753937b9b
+  CapacitorCordova: 8d93e14982f440181be7304aa9559ca631d77fff
+  CapacitorGeolocation: 2621f3cbd11be93377d633c8eac7b99bfbf060b6
+  SQLCipher: 908f846ca79d74be4e1776b3b86c6ad9e6c0b04f
+  ZIPFoundation: b8c29ea7ae353b309bc810586181fd073cb3312c
+
+PODFILE CHECKSUM: 6a79dd34fb322cea33dbe21687fb1dfa83ca99f3
+
+COCOAPODS: 1.16.2

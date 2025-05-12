@@ -871,6 +871,11 @@ clone@^1.0.2:
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha512-JQHZ2QMW6l3aH/j6xCqQThY/9OH4D/9ls34cgkUBiEeocRTU04tHfKPBsUK1PqZCUQM7GiA0IIXJSuXHI64Kbg==
 
+cocoapods@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/cocoapods/-/cocoapods-0.0.0.tgz#394adb14507abe6cc238736980e1152a4107b7b3"
+  integrity sha512-nsdKucT3oTSvS5s+W3/uxSn57+0e2LxMo2XcTsHwDCdYHB+T21haL11AkioVBACloAMQr00EDBZ//2DnynD9SQ==
+
 color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"

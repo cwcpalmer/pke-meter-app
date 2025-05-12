@@ -1,15 +1,48 @@
+
 <template>
     <q-page class="flex flex-center">
-        <div class="column">
-            <div>Temperature: {{  phoneDataStore.temp }}</div>
-            <div>Temperature 2: {{  phoneDataStore.temp2 }}</div>
-            <div>Latitude: {{  phoneDataStore.lastLocation.latitude }}</div>
-            <div>Longitude: {{  phoneDataStore.lastLocation.longitude }}</div>
-            <div>Time: {{ phoneDataStore.lastTimeStamp == null ? '' : new Date(phoneDataStore.lastTimeStamp) }}</div>
-        </div>
+    <div class="q-pa-md">
+    <q-option-group
+      v-model="separator"
+      inline
+      class="q-mb-md"
+      :options="separatorOptions"
+    />
+    <q-markup-table separator="cell" flat bordered class="bg-green-2">
+        <thead class="bg-green-4">
+            <tr>
+            <th class="text-left">Reading</th>
+            <th class="text-left">Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="text-left">Temperature</td>
+                <td class="text-left">{{  phoneDataStore.temp }}</td>
+                </tr>
+                <tr>
+                <td class="text-left">Temperature 2</td>
+                <td class="text-left">{{  phoneDataStore.temp2 }}</td>
+                </tr>
+                <tr>
+                <td class="text-left">Latitude</td>
+                <td class="text-left">{{  phoneDataStore.lastLocation.latitude }}</td>
+                </tr>
+                <tr>
+                <td class="text-left">Longitude</td>
+                <td class="text-left">{{  phoneDataStore.lastLocation.longitude }}</td>
+                </tr>
+                <tr>
+                <td class="text-left">Time</td>
+                <td class="text-left">{{ phoneDataStore.lastTimeStamp == null ? '' : formatter.format(new Date(phoneDataStore.lastTimeStamp)) }}</td>
+            </tr>
+        </tbody>
+        </q-markup-table>
+    </div>
+        
       <q-btn color="negative" size="xl" icon="arrow_back" label="Back" @click="$router.push('/')"/>
       <q-btn color="positive" size="xl" icon="help" label="Upload" @click="dbUpload()"/>
-      <q-btn color="positive" size="xl" icon="help" label="View" @click="dbView()"/>
+      <!-- <q-btn color="positive" size="xl" icon="help" label="View" @click="dbView()"/> -->
       <q-circular-progress
       show-value
       font-size="12px"
@@ -25,6 +58,7 @@
     </q-circular-progress>
     </q-page>
   </template>
+
   
   
   <script setup>
@@ -38,7 +72,11 @@
     const deviceStore = connectedDeviceStore();
     const progress = ref(0)
     const phoneDataStore = gatheredPhoneData()
-    
+    const formatter = new Intl.DateTimeFormat('en-GB', {
+      dateStyle: 'full',
+      timeStyle: 'short',
+    });
+
     onMounted( async () => {
       await databaseStore.openDatabase()
     });

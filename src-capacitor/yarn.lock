@@ -67,6 +67,11 @@
   resolved "https://registry.yarnpkg.com/@capacitor/geolocation/-/geolocation-6.0.1.tgz#b74acdef224321462abe0116fd87cf743b7fb4e5"
   integrity sha512-QOkIrSzG6E0vD2MF3gZmtuILQiuVro4LGPjqrUjCzhX10zl/4lx6bq4T+hj2YLUmMUnCiV1hWTOJHcpdVRMz7w==
 
+"@capacitor/ios@^6.0.0":
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-6.2.1.tgz#ac18a429072857c0fd88a74d30d6cc60288b7471"
+  integrity sha512-tbMlQdQjxe1wyaBvYVU1yTojKJjgluZQsJkALuJxv/6F8QTw5b6vd7X785O/O7cMpIAZfUWo/vtAHzFkRV+kXw==
+
 "@ionic/cli-framework-output@^2.2.5":
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/@ionic/cli-framework-output/-/cli-framework-output-2.2.8.tgz#29d541acc7773a6aaceec5f3b079937fbcef5402"
